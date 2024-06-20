@@ -1,49 +1,43 @@
-from datetime import datetime
-
 class Task:
-    def __init__(self, description, due_date):
+    def __init__(self, description, deadline):
         self.description = description
-        self.due_date = due_date
+        self.deadline = deadline
         self.completed = False
 
-    def mark_as_completed(self):
-        self.completed = True
-
-    def __str__(self):
-        status = 'Выполнено' if self.completed else 'Не выполнено'
-        return f"Задача: {self.description}, Срок: {self.due_date}, Статус: {status}"
 
 class TaskManager:
     def __init__(self):
         self.tasks = []
 
-    def add_task(self, description, due_date):
-        task = Task(description, due_date)
-        self.tasks.append(task)
+# Добавление новой задачи
+    def add_task(self, description, deadline):
+        new_task = Task(description, deadline)
+        self.tasks.append(new_task)
+        print(f"Задача '{description}' добавлена со сроком выполнения {deadline}.")
 
+# Выполнение задчи
     def mark_task_as_completed(self, task_index):
         if 0 <= task_index < len(self.tasks):
-            self.tasks[task_index].mark_as_completed()
+            self.tasks[task_index].completed = True
+            print(f"Задача '{self.tasks[task_index].description}' выполнена.")
         else:
-            print("Некорректный индекс задачи")
+            print("Ошибка индекса задачи.")
 
-    def get_current_tasks(self):
+    def display_current_tasks(self):
         current_tasks = [task for task in self.tasks if not task.completed]
-        return current_tasks
-
-    def show_current_tasks(self):
-        current_tasks = self.get_current_tasks()
-        if not current_tasks:
-            print("Все задачи выполнены!")
+        if current_tasks:
+            print("Текущие задачи:")
+            for index, task in enumerate(current_tasks, start=1):
+                print(f"{index}. {task.description} (Срок: {task.deadline})")
         else:
-            for idx, task in enumerate(current_tasks):
-                print(f"{idx}. {task}")
+            print("Нет текущих задач.")
 
-# Пример использования
-if __name__ == "__main__":
-    manager = TaskManager()
 
-    # Добавляем задачи
-    manager.add_task("Сделать домашнее задание", "2023-10-15")
-    manager.add_task("Купить продукты", "2023-10-10")
-    manager.add_task("Забрать посылку", "2023-10-12")
+task_manager = TaskManager()
+task_manager.add_task("Погулять с собакой", "2024-06-20")
+task_manager.add_task("Поменять солому у хомяков", "2024-06-22")
+task_manager.display_current_tasks()
+task_manager.mark_task_as_completed(0)
+task_manager.display_current_tasks()
+task_manager.mark_task_as_completed(1)
+task_manager.display_current_tasks()
